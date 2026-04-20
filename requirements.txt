@@ -3,5 +3,7 @@ httpx
 openai
 pydub
 numpy
-fastembed
+websockets
 python-dotenv
+fastembed
+deepgram-sdk
