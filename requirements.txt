@@ -1,0 +1,7 @@
+aiohttp
+httpx
+openai
+pydub
+numpy
+fastembed
+python-dotenv
