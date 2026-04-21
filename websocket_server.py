@@ -229,6 +229,16 @@ class BotSession:
         self._memory_full: str = ""
         self._memory_header: str = ""
 
+        # ── Client mode contextual silence reprompt ──
+        # If user goes silent for 20 seconds after Sam finishes speaking,
+        # Sam sends a gentle contextual reprompt ("Still there?", "Anything else?", etc).
+        # Max 2 reprompts per silence window, then Sam stays silent until user speaks.
+        # Cancelled on ANY user transcript (partial or final).
+        self._client_silence_task: asyncio.Task | None = None
+        self._client_reprompt_count = 0
+        self._user_left = False
+        self._last_sam_intent: str | None = None  # "question", "creation", "greeting", "completion", "answer", "general"
+
         # Output Media: audio page WebSocket connection
         self.audio_ws = None  # Set when audio page connects
 
@@ -739,6 +749,168 @@ class BotSession:
 
         return " ".join(parts)
 
+    # ── Client Mode Contextual Reprompt ──────────────────────────────────────
+
+    def _classify_sam_intent(self, sam_text: str) -> str:
+        """Classify Sam's last response into an intent category.
+
+        Used to pick a contextual reprompt when user goes silent. Simple
+        keyword/pattern matching — good enough for template selection.
+        """
+        if not sam_text:
+            return "general"
+
+        text_lower = sam_text.lower().strip()
+
+        # Greeting (strongest signal — usually at start of call)
+        greeting_markers = ["welcome", "how are you", "good to see",
+                            "hey", "hi sahil", "hello"]
+        if any(m in text_lower[:60] for m in greeting_markers):
+            return "greeting"
+
+        # Ticket creation confirmation (mentions logging/creating + ticket)
+        creation_markers = ["created", "logged", "log it", "logging",
+                            "i'll log", "i've logged", "i'll create",
+                            "i've created", "noted", "scrum-"]
+        if any(m in text_lower for m in creation_markers):
+            return "creation"
+
+        # Question to user (ends with ? — Sam needs an answer)
+        if sam_text.rstrip().endswith("?"):
+            return "question"
+
+        # Task completion signals
+        completion_markers = ["done", "sorted", "taken care of", "handled",
+                              "transitioned", "moved to", "updated"]
+        if any(m in text_lower for m in completion_markers):
+            return "completion"
+
+        # Default: Sam gave an informational answer
+        return "answer"
+
+    def _pick_contextual_reprompt(self) -> str:
+        """Choose a reprompt template matching Sam's last intent.
+        Uses the reprompt count (1st or 2nd) to pick variation.
+        """
+        intent = self._last_sam_intent or "general"
+        count = self._client_reprompt_count  # 1 for first reprompt, 2 for second
+
+        reprompts = {
+            "question": [
+                "Take your time with that one.",
+                "When you're ready with the answer, I'm here.",
+            ],
+            "creation": [
+                "Anything else we should log?",
+                "Let me know if you want more tickets created.",
+            ],
+            "greeting": [
+                "What would you like to discuss today?",
+                "Ready when you are.",
+            ],
+            "completion": [
+                "Anything else on your mind?",
+                "What's next on your list?",
+            ],
+            "answer": [
+                "Does that help clarify things?",
+                "Let me know if you want to dig deeper.",
+            ],
+            "general": [
+                "Still there?",
+                "Let me know when you're ready.",
+            ],
+        }
+
+        options = reprompts.get(intent, reprompts["general"])
+        idx = min(count - 1, len(options) - 1)
+        return options[idx] if idx >= 0 else options[0]
+
+    def _start_client_silence_timer(self):
+        """Start (or restart) the 20-second silence reprompt timer.
+        Safe to call repeatedly — cancels any existing timer first.
+        """
+        if self.mode == "standup":
+            return  # standup has its own reprompt system
+
+        # Cancel any existing timer
+        if self._client_silence_task and not self._client_silence_task.done():
+            self._client_silence_task.cancel()
+
+        self._client_silence_task = asyncio.create_task(
+            self._client_silence_reprompt()
+        )
+
+    def _cancel_client_silence_timer(self):
+        """Cancel pending silence timer + reset reprompt counter.
+        Called when user speaks (partial or final transcript).
+        """
+        if self._client_silence_task and not self._client_silence_task.done():
+            self._client_silence_task.cancel()
+        # Reset counter — user activity means next silence window starts fresh
+        self._client_reprompt_count = 0
+
+    async def _client_silence_reprompt(self):
+        """Wait 20 seconds, then send a contextual reprompt if user still silent.
+        Max 2 reprompts per silence window, then stays quiet until user speaks.
+        """
+        try:
+            await asyncio.sleep(20.0)
+
+            # Guards before reprompting
+            if self._user_left:
+                return  # user left the meeting
+            if self._client_reprompt_count >= 2:
+                print(f"[{ts()}] {self.tag} ⏰ Reprompt limit reached, staying silent")
+                return
+            if self.speaking or self.audio_playing:
+                # Sam is already speaking — don't interrupt with a reprompt.
+                # Restart timer so we try again after Sam finishes.
+                self._start_client_silence_timer()
+                return
+            if self.playing_ack:
+                # Interrupt ack is playing — wait
+                self._start_client_silence_timer()
+                return
+
+            self._client_reprompt_count += 1
+            prompt = self._pick_contextual_reprompt()
+
+            print(f"[{ts()}] {self.tag} ⏰ Contextual reprompt "
+                  f"({self._client_reprompt_count}/2) "
+                  f"[intent={self._last_sam_intent}]: \"{prompt}\"")
+
+            # Add reprompt to transcript history (marked as Sam)
+            try:
+                self.agent.rag._entries.append({
+                    "speaker": "Sam", "text": prompt, "time": time.time()
+                })
+            except Exception:
+                pass  # non-fatal if rag state is unexpected
+
+            # Speak the reprompt. Option A interrupt will cancel this if user
+            # starts speaking during the reprompt itself.
+            self.speaking = True
+            try:
+                await self._speak(prompt, "client-reprompt", self.generation)
+            except Exception as e:
+                print(f"[{ts()}] {self.tag} ⚠️  Reprompt speak failed: {e}")
+                return
+            finally:
+                self.speaking = False
+                self.audio_playing = False
+
+            # Restart timer — after reprompt, wait another 20s for potential
+            # second reprompt (if user still silent). Counter already incremented,
+            # so second call will hit the limit check above.
+            self._start_client_silence_timer()
+
+        except asyncio.CancelledError:
+            # User spoke — timer cleanly cancelled. No action needed.
+            pass
+        except Exception as e:
+            print(f"[{ts()}] {self.tag} ⚠️  Silence reprompt failed: {e}")
+
     # ── Event dispatch ────────────────────────────────────────────────────────
 
     async def handle_event(self, raw):
@@ -763,6 +935,10 @@ class BotSession:
 
             self.agent.log_exchange(speaker, text)
             print(f"\n[{ts()}] {self.tag} [{speaker}] {text}")
+
+            # User spoke — cancel any pending silence reprompt (client mode only)
+            if self.mode != "standup":
+                self._cancel_client_silence_timer()
 
             # ── Standup mode: buffer transcript, restart timer only when safe ──
             if self.standup_flow and not self.standup_flow.is_done:
@@ -859,6 +1035,11 @@ class BotSession:
                 if self.eot_task and not self.eot_task.done():
                     self.eot_task.cancel()
 
+                # User started speaking — cancel silence reprompt immediately
+                # (even if they speak at the 19.9th second, this catches it).
+                if self.mode != "standup":
+                    self._cancel_client_silence_timer()
+
                 # ── Fast interrupt: stop Sam's audio on first interim words ──
                 if self.speaking and self.audio_playing and not self.playing_ack and not self._partial_interrupted:
                     # In standup Q&A phase, don't interrupt — user speech gets buffered
@@ -875,9 +1056,11 @@ class BotSession:
                         else:
                             print(f"[{ts()}] {self.tag} ⚡ Re-prompt interrupted — user is answering")
 
-                    # Don't interrupt for very short interims (single word could be noise)
+                    # OPTION A: Any transcribed word interrupts immediately.
+                    # Nova-3 filters coughs/uhms/mhms before they become transcripts,
+                    # so single-word transcripts are real intent (not noise).
                     word_count = len(text.split())
-                    if word_count >= 2:
+                    if word_count >= 1:
                         self._partial_interrupted = True
                         self._partial_interrupt_time = time.time()
                         print(f"[{ts()}] {self.tag} ⚡ FAST INTERRUPT via interim: \"{text[:40]}\" ({word_count} words) — stopping audio")
@@ -981,6 +1164,8 @@ class BotSession:
             name = payload.get("data", {}).get("data", {}).get("participant", {}).get("name", "Unknown")
             if name and name.lower() != "sam":
                 print(f"[{ts()}] {self.tag} 👋 {name} joined")
+                # User is back (or new user joined) — reprompts should work again
+                self._user_left = False
                 # Feature 4 Memory: record attendee + start lock task on first join.
                 # We start the 30s timer when the FIRST attendee joins (not at session
                 # init) because the bot/participants take variable time to join.
@@ -999,6 +1184,11 @@ class BotSession:
             name = payload.get("data", {}).get("data", {}).get("participant", {}).get("name", "Unknown")
             if name and name.lower() != "sam":
                 print(f"[{ts()}] {self.tag} 👋 {name} left")
+                # Mark user left + cancel any pending silence reprompt.
+                # No point reprompting an empty room.
+                self._user_left = True
+                if self._client_silence_task and not self._client_silence_task.done():
+                    self._client_silence_task.cancel()
 
     # ── EOT ───────────────────────────────────────────────────────────────────
 
@@ -1230,6 +1420,12 @@ class BotSession:
         finally:
             self.speaking = False
             self.audio_playing = False
+
+        # Start silence reprompt timer after greeting (client mode only).
+        # If user stays silent 20s, Sam will ask "What would you like to discuss today?"
+        if self.mode != "standup" and not self._user_left:
+            self._last_sam_intent = "greeting"
+            self._start_client_silence_timer()
 
     async def _start_standup(self, developer_name: str):
         """Initialize and start the standup flow for a developer."""
@@ -2267,6 +2463,14 @@ class BotSession:
                     print(f"[{ts()}] {self.tag} 📊 TOTAL: {elapsed(t0)}")
                     self._log_sam(" ".join(all_sentences))
                     self.trigger.mark_responded()
+
+                    # Client mode contextual reprompt: classify Sam's intent
+                    # based on his response, then start the 20s silence timer.
+                    # If user speaks before then, timer cancels (see transcript handlers).
+                    if self.mode != "standup" and not self._user_left and not self.was_interrupted:
+                        sam_final = " ".join(all_sentences)
+                        self._last_sam_intent = self._classify_sam_intent(sam_final)
+                        self._start_client_silence_timer()
 
         except asyncio.CancelledError:
             pass
