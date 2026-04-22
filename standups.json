@@ -1,0 +1,135 @@
+[
+  {
+    "developer": "Sahil",
+    "date": "2026-04-21",
+    "started_at": "2026-04-17T07:39:21Z",
+    "completed_at": "2026-04-17T07:40:24Z",
+    "completed": true,
+    "yesterday": {
+      "summary": "Worked on SCRUM-51",
+      "raw": "Yesterday, I worked on SCRUM-51 and fifty two.",
+      "tasks": ["Worked on SCRUM-51"],
+      "jira_ids": ["SCRUM-51"]
+    },
+    "today": {
+      "summary": "Work on SCRUM-32",
+      "raw": "Today, we work on SCRUM-32",
+      "tasks": ["Work on SCRUM-32"],
+      "jira_ids": ["SCRUM-32"]
+    },
+    "blockers": {
+      "summary": "Manager on leave",
+      "raw": "Actually, I need to change the blockers. Uh, I am... my manager is on leave today, so there will be some delay.",
+      "items": ["Manager on leave"],
+      "jira_ids": []
+    },
+    "all_jira_ids": ["SCRUM-51", "SCRUM-32"],
+    "status_updates": [
+      {"ticket": "SCRUM-51", "action": "done"},
+      {"ticket": "SCRUM-32", "action": "in_progress"}
+    ],
+    "one_line_summary": "Worked on SCRUM-51, working on SCRUM-32 — blocked on manager.",
+    "has_real_blocker": true,
+    "session_id": "1759afa5-e928-47c3-b64f-0ec443f127c0",
+    "user": "admin",
+    "mode": "standup"
+  },
+  {
+    "developer": "Sahil",
+    "date": "2026-04-20",
+    "started_at": "2026-04-16T13:07:34Z",
+    "completed_at": "2026-04-16T13:09:12Z",
+    "completed": true,
+    "yesterday": {
+      "summary": "Worked on critical login issues",
+      "raw": "Yesterday, I worked on critical login issues and got them resolved.",
+      "tasks": ["Worked on critical login issues"],
+      "jira_ids": []
+    },
+    "today": {
+      "summary": "Working on SCRUM-115",
+      "raw": "Today we work on SCRUM-115",
+      "tasks": ["Working on SCRUM-115"],
+      "jira_ids": ["SCRUM-115"]
+    },
+    "blockers": {
+      "summary": "No blockers",
+      "raw": "No blockers today.",
+      "items": [],
+      "jira_ids": []
+    },
+    "all_jira_ids": ["SCRUM-115"],
+    "status_updates": [],
+    "one_line_summary": "Fixed critical login issues yesterday, working on SCRUM-115 today — no blockers.",
+    "has_real_blocker": false,
+    "session_id": "e760faf1-5c98-4369-ba03-627f20c6bd16",
+    "user": "admin",
+    "mode": "standup"
+  },
+  {
+    "developer": "Vanshita Gupta",
+    "date": "2026-04-20",
+    "started_at": "2026-04-16T09:45:12Z",
+    "completed_at": "2026-04-16T09:46:38Z",
+    "completed": true,
+    "yesterday": {
+      "summary": "Worked on SCRUM-28 login page UI fixes",
+      "raw": "Yesterday I was working on SCRUM-28, the login page UI fixes, and got most of the styling issues resolved.",
+      "tasks": ["Worked on SCRUM-28 login page UI fixes"],
+      "jira_ids": ["SCRUM-28"]
+    },
+    "today": {
+      "summary": "Continuing SCRUM-28 and picking up SCRUM-34",
+      "raw": "Today I'm continuing with SCRUM-28 to wrap up the remaining items and then picking up SCRUM-34 for the dashboard component.",
+      "tasks": ["Continuing SCRUM-28", "Picking up SCRUM-34"],
+      "jira_ids": ["SCRUM-28", "SCRUM-34"]
+    },
+    "blockers": {
+      "summary": "No blockers",
+      "raw": "No blockers, everything is on track.",
+      "items": [],
+      "jira_ids": []
+    },
+    "all_jira_ids": ["SCRUM-28", "SCRUM-34"],
+    "status_updates": [
+      {"ticket": "SCRUM-28", "action": "in_progress"}
+    ],
+    "one_line_summary": "Worked on SCRUM-28 login UI yesterday, continuing it plus SCRUM-34 dashboard today — no blockers.",
+    "has_real_blocker": false,
+    "session_id": "a3c9f1e8-4b72-4d9e-9c15-8f2a1b3c7d5e",
+    "user": "admin",
+    "mode": "standup"
+  },
+  {
+    "developer": "Vanshita Gupta",
+    "date": "2026-04-21",
+    "started_at": "2026-04-17T12:55:42Z",
+    "completed_at": "2026-04-17T12:56:58Z",
+    "completed": true,
+    "yesterday": {
+      "summary": "Already told you",
+      "raw": "Already told you.",
+      "tasks": [],
+      "jira_ids": []
+    },
+    "today": {
+      "summary": "Same as yesterday",
+      "raw": "Same as yesterday.",
+      "tasks": [],
+      "jira_ids": []
+    },
+    "blockers": {
+      "summary": "No blockers",
+      "raw": "None.",
+      "items": [],
+      "jira_ids": []
+    },
+    "all_jira_ids": [],
+    "status_updates": [],
+    "one_line_summary": "Same work as yesterday — no blockers.",
+    "has_real_blocker": false,
+    "session_id": "b4d0f2e9-5c83-4e0f-ad26-9a3b2c4d8e6f",
+    "user": "admin",
+    "mode": "standup"
+  }
+]
