@@ -2,133 +2,233 @@
   {
     "developer": "Sahil",
     "date": "2026-04-21",
-    "started_at": "2026-04-17T07:39:21Z",
-    "completed_at": "2026-04-17T07:40:24Z",
+    "started_at": "2026-04-21T09:32:15Z",
+    "completed_at": "2026-04-21T09:33:42Z",
     "completed": true,
     "yesterday": {
-      "summary": "Worked on SCRUM-51",
-      "raw": "Yesterday, I worked on SCRUM-51 and fifty two.",
-      "tasks": ["Worked on SCRUM-51"],
-      "jira_ids": ["SCRUM-51"]
+      "summary": "Fixed login page performance issue and reviewed CSV export spec",
+      "raw": "Yesterday I was working on SCRUM-162, the login page performance issue. Got the database connection pooling sorted out and the response time dropped from around 3 seconds to under 500 milliseconds. Also reviewed the CSV export spec with the team.",
+      "tasks": [
+        "Fixed SCRUM-162 login page performance",
+        "Reviewed CSV export spec"
+      ],
+      "jira_ids": ["SCRUM-162"]
     },
     "today": {
-      "summary": "Work on SCRUM-32",
-      "raw": "Today, we work on SCRUM-32",
-      "tasks": ["Work on SCRUM-32"],
-      "jira_ids": ["SCRUM-32"]
+      "summary": "Working on SCRUM-175 dashboard discrepancies",
+      "raw": "Today I'm picking up SCRUM-175, the dashboard data accuracy issues Vanshita flagged. Going to trace the aggregation query first and see where the numbers are diverging.",
+      "tasks": [
+        "Debug SCRUM-175 dashboard discrepancies"
+      ],
+      "jira_ids": ["SCRUM-175"]
     },
     "blockers": {
-      "summary": "Manager on leave",
-      "raw": "Actually, I need to change the blockers. Uh, I am... my manager is on leave today, so there will be some delay.",
-      "items": ["Manager on leave"],
+      "summary": "Waiting on staging DB access",
+      "raw": "One blocker - I need staging DB access to reproduce the dashboard issue. Filed a ticket with DevOps yesterday but still waiting.",
+      "items": ["Waiting on staging DB access from DevOps"],
       "jira_ids": []
     },
-    "all_jira_ids": ["SCRUM-51", "SCRUM-32"],
+    "all_jira_ids": ["SCRUM-162", "SCRUM-175"],
     "status_updates": [
-      {"ticket": "SCRUM-51", "action": "done"},
-      {"ticket": "SCRUM-32", "action": "in_progress"}
+      {"ticket": "SCRUM-162", "action": "done"},
+      {"ticket": "SCRUM-175", "action": "in_progress"}
     ],
-    "one_line_summary": "Worked on SCRUM-51, working on SCRUM-32 — blocked on manager.",
+    "one_line_summary": "Fixed SCRUM-162 login performance yesterday, starting SCRUM-175 dashboard fix today - blocked on staging DB access.",
     "has_real_blocker": true,
-    "session_id": "1759afa5-e928-47c3-b64f-0ec443f127c0",
-    "user": "admin",
-    "mode": "standup"
-  },
-  {
-    "developer": "Sahil",
-    "date": "2026-04-20",
-    "started_at": "2026-04-16T13:07:34Z",
-    "completed_at": "2026-04-16T13:09:12Z",
-    "completed": true,
-    "yesterday": {
-      "summary": "Worked on critical login issues",
-      "raw": "Yesterday, I worked on critical login issues and got them resolved.",
-      "tasks": ["Worked on critical login issues"],
-      "jira_ids": []
-    },
-    "today": {
-      "summary": "Working on SCRUM-115",
-      "raw": "Today we work on SCRUM-115",
-      "tasks": ["Working on SCRUM-115"],
-      "jira_ids": ["SCRUM-115"]
-    },
-    "blockers": {
-      "summary": "No blockers",
-      "raw": "No blockers today.",
-      "items": [],
-      "jira_ids": []
-    },
-    "all_jira_ids": ["SCRUM-115"],
-    "status_updates": [],
-    "one_line_summary": "Fixed critical login issues yesterday, working on SCRUM-115 today — no blockers.",
-    "has_real_blocker": false,
-    "session_id": "e760faf1-5c98-4369-ba03-627f20c6bd16",
-    "user": "admin",
-    "mode": "standup"
-  },
-  {
-    "developer": "Vanshita Gupta",
-    "date": "2026-04-20",
-    "started_at": "2026-04-16T09:45:12Z",
-    "completed_at": "2026-04-16T09:46:38Z",
-    "completed": true,
-    "yesterday": {
-      "summary": "Worked on SCRUM-28 login page UI fixes",
-      "raw": "Yesterday I was working on SCRUM-28, the login page UI fixes, and got most of the styling issues resolved.",
-      "tasks": ["Worked on SCRUM-28 login page UI fixes"],
-      "jira_ids": ["SCRUM-28"]
-    },
-    "today": {
-      "summary": "Continuing SCRUM-28 and picking up SCRUM-34",
-      "raw": "Today I'm continuing with SCRUM-28 to wrap up the remaining items and then picking up SCRUM-34 for the dashboard component.",
-      "tasks": ["Continuing SCRUM-28", "Picking up SCRUM-34"],
-      "jira_ids": ["SCRUM-28", "SCRUM-34"]
-    },
-    "blockers": {
-      "summary": "No blockers",
-      "raw": "No blockers, everything is on track.",
-      "items": [],
-      "jira_ids": []
-    },
-    "all_jira_ids": ["SCRUM-28", "SCRUM-34"],
-    "status_updates": [
-      {"ticket": "SCRUM-28", "action": "in_progress"}
-    ],
-    "one_line_summary": "Worked on SCRUM-28 login UI yesterday, continuing it plus SCRUM-34 dashboard today — no blockers.",
-    "has_real_blocker": false,
-    "session_id": "a3c9f1e8-4b72-4d9e-9c15-8f2a1b3c7d5e",
+    "session_id": "demo-sahil-2026-04-21",
     "user": "admin",
     "mode": "standup"
   },
   {
     "developer": "Vanshita Gupta",
     "date": "2026-04-21",
-    "started_at": "2026-04-17T12:55:42Z",
-    "completed_at": "2026-04-17T12:56:58Z",
+    "started_at": "2026-04-21T09:45:08Z",
+    "completed_at": "2026-04-21T09:46:31Z",
     "completed": true,
     "yesterday": {
-      "summary": "Already told you",
-      "raw": "Already told you.",
-      "tasks": [],
+      "summary": "Completed login UI fixes and filed dashboard layout issues",
+      "raw": "Yesterday I wrapped up SCRUM-28, the login page UI fixes - all the styling issues are resolved and merged. Also went through the dashboard and filed three new tickets for the layout problems I noticed.",
+      "tasks": [
+        "Completed SCRUM-28 login UI fixes",
+        "Filed dashboard layout tickets"
+      ],
+      "jira_ids": ["SCRUM-28"]
+    },
+    "today": {
+      "summary": "Starting SCRUM-34 dashboard component refactor",
+      "raw": "Today I'm picking up SCRUM-34, the dashboard component refactor. Planning to break it into smaller subcomponents so the layout issues I flagged yesterday are easier to fix.",
+      "tasks": [
+        "SCRUM-34 dashboard refactor"
+      ],
+      "jira_ids": ["SCRUM-34"]
+    },
+    "blockers": {
+      "summary": "No blockers",
+      "raw": "No blockers today, everything is on track.",
+      "items": [],
+      "jira_ids": []
+    },
+    "all_jira_ids": ["SCRUM-28", "SCRUM-34"],
+    "status_updates": [
+      {"ticket": "SCRUM-28", "action": "done"},
+      {"ticket": "SCRUM-34", "action": "in_progress"}
+    ],
+    "one_line_summary": "Finished SCRUM-28 login UI yesterday, starting SCRUM-34 dashboard refactor today - no blockers.",
+    "has_real_blocker": false,
+    "session_id": "demo-vanshita-2026-04-21",
+    "user": "admin",
+    "mode": "standup"
+  },
+  {
+    "developer": "Anil Vaishnav",
+    "date": "2026-04-21",
+    "started_at": "2026-04-21T10:02:12Z",
+    "completed_at": "2026-04-21T10:03:28Z",
+    "completed": true,
+    "yesterday": {
+      "summary": "Reviewed architecture for payment API improvements",
+      "raw": "Yesterday I spent most of the day reviewing the architecture for the payment API improvements. Had a few sync calls with the team and documented the current bottlenecks.",
+      "tasks": [
+        "Reviewed payment API architecture"
+      ],
       "jira_ids": []
     },
     "today": {
-      "summary": "Same as yesterday",
-      "raw": "Same as yesterday.",
-      "tasks": [],
+      "summary": "Finalizing payment API design and onboarding new hire",
+      "raw": "Today I'm finalizing the design document for the payment API work and also doing an onboarding session with the new backend hire in the afternoon.",
+      "tasks": [
+        "Finalize payment API design doc",
+        "Onboard new backend hire"
+      ],
       "jira_ids": []
     },
     "blockers": {
       "summary": "No blockers",
-      "raw": "None.",
+      "raw": "Nothing blocking.",
       "items": [],
       "jira_ids": []
     },
     "all_jira_ids": [],
     "status_updates": [],
-    "one_line_summary": "Same work as yesterday — no blockers.",
+    "one_line_summary": "Reviewed payment API architecture yesterday, finalizing design today and onboarding new hire - no blockers.",
     "has_real_blocker": false,
-    "session_id": "b4d0f2e9-5c83-4e0f-ad26-9a3b2c4d8e6f",
+    "session_id": "demo-anil-2026-04-21",
+    "user": "admin",
+    "mode": "standup"
+  },
+  {
+    "developer": "Sahil",
+    "date": "2026-04-20",
+    "started_at": "2026-04-20T09:28:44Z",
+    "completed_at": "2026-04-20T09:30:10Z",
+    "completed": true,
+    "yesterday": {
+      "summary": "Investigated SCRUM-162 root cause",
+      "raw": "Yesterday I spent the day digging into SCRUM-162. Found that the login page slowness was coming from an unindexed user lookup query. Started prototyping the connection pool change.",
+      "tasks": [
+        "Investigated SCRUM-162 root cause"
+      ],
+      "jira_ids": ["SCRUM-162"]
+    },
+    "today": {
+      "summary": "Implementing connection pooling fix for SCRUM-162",
+      "raw": "Today I'm implementing the connection pooling fix. Should have it in a PR by end of day.",
+      "tasks": [
+        "Implement SCRUM-162 fix"
+      ],
+      "jira_ids": ["SCRUM-162"]
+    },
+    "blockers": {
+      "summary": "No blockers",
+      "raw": "No blockers.",
+      "items": [],
+      "jira_ids": []
+    },
+    "all_jira_ids": ["SCRUM-162"],
+    "status_updates": [
+      {"ticket": "SCRUM-162", "action": "in_progress"}
+    ],
+    "one_line_summary": "Investigated SCRUM-162 root cause yesterday, implementing fix today - no blockers.",
+    "has_real_blocker": false,
+    "session_id": "demo-sahil-2026-04-20",
+    "user": "admin",
+    "mode": "standup"
+  },
+  {
+    "developer": "Vanshita Gupta",
+    "date": "2026-04-20",
+    "started_at": "2026-04-20T09:42:03Z",
+    "completed_at": "2026-04-20T09:43:15Z",
+    "completed": true,
+    "yesterday": {
+      "summary": "Worked on SCRUM-28 login page UI fixes",
+      "raw": "Yesterday I was working on SCRUM-28, the login page UI fixes. Got the form validation styling consistent across browsers but still had a few edge cases on mobile.",
+      "tasks": [
+        "SCRUM-28 UI fixes"
+      ],
+      "jira_ids": ["SCRUM-28"]
+    },
+    "today": {
+      "summary": "Wrapping up SCRUM-28 mobile edge cases",
+      "raw": "Today I want to finish the mobile edge cases on SCRUM-28 and get the PR reviewed.",
+      "tasks": [
+        "Finish SCRUM-28 mobile edge cases"
+      ],
+      "jira_ids": ["SCRUM-28"]
+    },
+    "blockers": {
+      "summary": "No blockers",
+      "raw": "Nothing blocking.",
+      "items": [],
+      "jira_ids": []
+    },
+    "all_jira_ids": ["SCRUM-28"],
+    "status_updates": [
+      {"ticket": "SCRUM-28", "action": "in_progress"}
+    ],
+    "one_line_summary": "Worked on SCRUM-28 UI fixes yesterday, wrapping up mobile edge cases today - no blockers.",
+    "has_real_blocker": false,
+    "session_id": "demo-vanshita-2026-04-20",
+    "user": "admin",
+    "mode": "standup"
+  },
+  {
+    "developer": "Sahil",
+    "date": "2026-04-18",
+    "started_at": "2026-04-18T09:35:20Z",
+    "completed_at": "2026-04-18T09:36:42Z",
+    "completed": true,
+    "yesterday": {
+      "summary": "Triaged support tickets and fixed chatbot crash",
+      "raw": "Yesterday I triaged the incoming support tickets from the weekend and fixed the chatbot crash that SCRUM-89 was blocking users on.",
+      "tasks": [
+        "Triaged weekend support tickets",
+        "Fixed SCRUM-89 chatbot crash"
+      ],
+      "jira_ids": ["SCRUM-89"]
+    },
+    "today": {
+      "summary": "Starting SCRUM-162 login performance investigation",
+      "raw": "Today I'm starting on SCRUM-162, the login page performance issue. Going to profile the request path first to figure out where the time is going.",
+      "tasks": [
+        "Start SCRUM-162 investigation"
+      ],
+      "jira_ids": ["SCRUM-162"]
+    },
+    "blockers": {
+      "summary": "No blockers",
+      "raw": "No blockers.",
+      "items": [],
+      "jira_ids": []
+    },
+    "all_jira_ids": ["SCRUM-89", "SCRUM-162"],
+    "status_updates": [
+      {"ticket": "SCRUM-89", "action": "done"},
+      {"ticket": "SCRUM-162", "action": "in_progress"}
+    ],
+    "one_line_summary": "Fixed SCRUM-89 chatbot crash yesterday, starting SCRUM-162 login performance today - no blockers.",
+    "has_real_blocker": false,
+    "session_id": "demo-sahil-2026-04-18",
     "user": "admin",
     "mode": "standup"
   }
